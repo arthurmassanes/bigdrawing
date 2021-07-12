@@ -1,0 +1,16 @@
+{
+  "name": "free-drawer-server",
+  "version": "1.0.0",
+  "description": "the backend for free-drawer",
+  "main": "server.js",
+  "dependencies": {
+    "socket.io": "^4.1.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"\"",
+    "start": "node server.js"
+  },
+  "author": "arthurmassanes",
+  "license": "ISC"
+}
