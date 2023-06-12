@@ -1,7 +1,7 @@
 
 let gui, guiDiv, button;
 var socket;
-var hoverGui = false;
+var isHoveringGui = false;
 
 const WHITE = "FFFFFF";
 const GUI_CLASS = '.qs_main';
@@ -18,7 +18,13 @@ var Erase = false;
 function setup() {
     createCanvas(4000, 3000);
     background(WHITE)
-    frameRate(30);
+    frameRate(60);
+    setupGui();
+    socket.on("welcome", setupCanvas)
+    socket.on("draw", onReceiveDrawEvent)
+}
+
+const setupGui = () => {
     gui = createGui('Settings');
     gui.addGlobals("strokeColor", "strokeWidth", "Erase");
     guiDiv = select(GUI_CLASS);
@@ -27,8 +33,6 @@ function setup() {
     button.mousePressed(onClickSave)
     noStroke();
     printInstructions();
-    socket.on("welcome", setupCanvas)
-    socket.on("draw", onReceiveDrawEvent)
 }
 
 const printInstructions = () => {
@@ -48,17 +52,26 @@ const setupCanvas = (data) => { // place the pixels already drawn to canvas
 }
 
 const onReceiveDrawEvent = (data) => {
-    stroke(data.color);
-    strokeWeight(data.strokeWidth);
-    line(data.mouseX, data.mouseY, data.pmouseX, data.pmouseY)
+    const {
+        color,
+        strokeWidth,
+        mouseX,
+        mouseY,
+        pmouseX,
+        pmouseY
+    } = data;
+
+    stroke(color);
+    strokeWeight(strokeWidth);
+    line(mouseX, mouseY, pmouseX, pmouseY)
 }
 
 const onMouseOver = () => {
-    hoverGui = true;
+    isHoveringGui = true;
 }
 
 const onMouseOut = () => {
-    hoverGui = false;
+    isHoveringGui = false;
 }
 
 const checkIsHoveringGui = () => {
@@ -71,9 +84,9 @@ const checkIsHoveringGui = () => {
 const drawAtMousePos = () => {
     let xOffset = -8; // make the end of cursor match the drawing point on the image
     let yOffset = 19;
-    const color = strokeColor;//Erase ? WHITE : strokeColor;
+    const color = Erase ? WHITE : strokeColor;
     checkIsHoveringGui();
-    if (hoverGui) return;
+    if (isHoveringGui) return;
     stroke(color)
     strokeWeight(strokeWidth);
     line(mouseX + xOffset, mouseY + yOffset, pmouseX + xOffset, pmouseY + yOffset);
