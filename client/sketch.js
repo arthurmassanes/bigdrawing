@@ -11,6 +11,10 @@ var strokeWidthMin = 1;
 var strokeWidthMax = 100;
 var strokeWidthStep = 1;
 
+const xOffset = -9; // make the end of cursor match the drawing point on the image
+const yOffset = 25;
+
+
 var strokeColor = [0, 30, 0];
 
 var Erase = false;
@@ -18,7 +22,7 @@ var Erase = false;
 function setup() {
     createCanvas(4000, 3000);
     background(WHITE)
-    frameRate(60);
+    frameRate(100);
     setupGui();
     socket.on("welcome", setupCanvas)
     socket.on("draw", onReceiveDrawEvent)
@@ -40,7 +44,7 @@ const printInstructions = () => {
     stroke(WHITE);
     strokeWeight(1);
     textSize(20);
-    text("Welcome to free-drawer by arthur !\nClick and drag your mouse to start drawing", 50, 250)
+    text("Welcome to the bigdrawing!\nClick and drag your mouse to start drawing\n\nby arthur", 50, 250)
 }
 
 function onClickSave() {
@@ -82,8 +86,6 @@ const checkIsHoveringGui = () => {
 }
 
 const drawAtMousePos = () => {
-    let xOffset = -8; // make the end of cursor match the drawing point on the image
-    let yOffset = 19;
     const color = Erase ? WHITE : strokeColor;
     checkIsHoveringGui();
     if (isHoveringGui) return;
