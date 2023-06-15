@@ -13,6 +13,7 @@ storage.init().then(() => {
 // create the http and socket server
 const httpServer = require("http").createServer();
 const io = require("socket.io")(httpServer, {
+    serveClient: false,
     cors: { origins: ["*"], methods: ["GET", "POST"] }
 })
 
@@ -31,5 +32,6 @@ io.on("connection", (socket) => {
     });
 })
 
-httpServer.listen(process.env.PORT || 3000)
-console.log('Server started')
+const port = process.env.PORT || 3000;
+httpServer.listen(port);
+console.log(`Server started on port ${port}`)
