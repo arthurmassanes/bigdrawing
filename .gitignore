@@ -1,2 +1,7 @@
 node_modules/
 .node_persist
+fly.toml
+Dockerfile
+.dockerignore
+node_modules
+.git
