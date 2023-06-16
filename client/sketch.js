@@ -25,6 +25,7 @@ function setup() {
     background(WHITE)
     frameRate(100);
     setupGui();
+    pixelDensity(1)
     socket.on("welcome", setupCanvas)
     socket.on("draw", onReceiveDrawEvent)
     socket.emit("ready");
