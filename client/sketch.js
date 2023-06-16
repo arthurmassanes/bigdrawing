@@ -11,7 +11,8 @@ var strokeWidthMin = 1;
 var strokeWidthMax = 100;
 var strokeWidthStep = 1;
 
-const xOffset = -9; // make the end of cursor match the drawing point on the image
+// make the end of cursor match the drawing point on the image
+const xOffset = -9;
 const yOffset = 25;
 
 
@@ -26,6 +27,7 @@ function setup() {
     setupGui();
     socket.on("welcome", setupCanvas)
     socket.on("draw", onReceiveDrawEvent)
+    socket.emit("ready");
 }
 
 const setupGui = () => {
@@ -37,6 +39,7 @@ const setupGui = () => {
     button.mousePressed(onClickSave)
     noStroke();
     printInstructions();
+    checkIsHoveringGui();
 }
 
 const printInstructions = () => {
@@ -87,7 +90,6 @@ const checkIsHoveringGui = () => {
 
 const drawAtMousePos = () => {
     const color = Erase ? WHITE : strokeColor;
-    checkIsHoveringGui();
     if (isHoveringGui) return;
     stroke(color)
     strokeWeight(strokeWidth);

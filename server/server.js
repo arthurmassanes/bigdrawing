@@ -22,7 +22,8 @@ const restorePixels = async () => {
     io.on("connection", (socket) => {
         const address = socket.request.connection.remoteAddress;
         console.log(`New connection from address ${address}\nServing ${placedPixels.length} pixels.`);
-        socket.emit("welcome", placedPixels);
+
+        socket.on("ready", () => socket.emit("welcome", placedPixels));
         socket.on("draw", (data) => {
             placedPixels.push(data);
             socket.broadcast.emit("draw", data)
